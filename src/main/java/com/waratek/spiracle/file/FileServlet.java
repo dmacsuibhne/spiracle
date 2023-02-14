@@ -15,10 +15,18 @@
  */
 package com.waratek.spiracle.file;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.Scanner;
 
 import javax.servlet.ServletException;
@@ -28,12 +36,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import okhttp3.Call;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 import org.apache.log4j.Logger;
 
 /**
@@ -70,13 +72,13 @@ public class FileServlet extends HttpServlet {
 		final String urlHttp = "http://www.google.com/";
 		final String urlHttps = "https://www.google.com/";
 		logger.info("DEBUG: Making HTTP GET request at start of FileServlet request handling");
-		okHttpGet(urlHttp);
+		basicGet(urlHttp);
 		logger.info("DEBUG: Making HTTPS GET request at start of FileServlet request handling");
-		okHttpGet(urlHttps);
+		basicGet(urlHttps);
 		logger.info("DEBUG: Making HTTP POST request at start of FileServlet request handling");
-		okHttpPost(urlHttp);
+		basicPost(urlHttp);
 		logger.info("DEBUG: Making HTTPS POST request at start of FileServlet request handling");
-		okHttpPost(urlHttps);
+		basicPost(urlHttps);
 		HttpSession session = request.getSession();
 
 		String method = request.getParameter("fileArg");
@@ -96,36 +98,77 @@ public class FileServlet extends HttpServlet {
 		response.sendRedirect("file.jsp");
 	}
 
-	private void okHttpGet(String url) throws IOException
-	{
-		logger.info("DEBUG: GET URL: " + url);
-		OkHttpClient client = new OkHttpClient.Builder().build();
-		Request okhttpRequest = new Request.Builder()
-				.url(url)
-				.build();
+//	private void okHttpGet(String url) throws IOException
+//	{
+//		logger.info("DEBUG: GET URL: " + url);
+//		OkHttpClient client = new OkHttpClient.Builder().build();
+//		Request okhttpRequest = new Request.Builder()
+//				.url(url)
+//				.build();
+//
+//		Call call = client.newCall(okhttpRequest);
+//		Response okHttpResponse = call.execute();
+//		logger.info("DEBUG: Response code: " + okHttpResponse.code());
+//		logger.info("DEBUG: Response body: " + okHttpResponse.body().string());
+//	}
 
-		Call call = client.newCall(okhttpRequest);
-		Response okHttpResponse = call.execute();
-		logger.info("DEBUG: Response code: " + okHttpResponse.code());
+//	private void okHttpPost(String url) throws IOException
+//	{
+//		logger.info("DEBUG: POST URL: " + url);
+//		OkHttpClient client = new OkHttpClient.Builder().build();
+//		RequestBody formBody = new FormBody.Builder()
+//				.add("username", "test")
+//				.add("password", "test")
+//				.build();
+//
+//		Request okhttpRequest = new Request.Builder()
+//				.url(url)
+//				.post(formBody)
+//				.build();
+//
+//		Call call = client.newCall(okhttpRequest);
+//		Response okHttpResponse = call.execute();
+//		logger.info("DEBUG: Response code: " + okHttpResponse.code());
+//		logger.info("DEBUG: Response body: " + okHttpResponse.body().string());
+//	}
+
+	private void basicGet(String url) throws IOException
+	{
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+		con.setRequestMethod("GET");
+		logger.info("DEBUG: Response code: " + con.getResponseCode());
+		printBasicResponseBody(con.getInputStream());
 	}
 
-	private void okHttpPost(String url) throws IOException
+	private void basicPost(String url) throws IOException
 	{
-		logger.info("DEBUG: POST URL: " + url);
-		OkHttpClient client = new OkHttpClient.Builder().build();
-		RequestBody formBody = new FormBody.Builder()
-				.add("username", "test")
-				.add("password", "test")
-				.build();
+		URL obj = new URL(url);
+		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+		con.setRequestMethod("POST");
 
-		Request okhttpRequest = new Request.Builder()
-				.url(url)
-				.post(formBody)
-				.build();
+		// For POST only - START
+		con.setDoOutput(true);
+		OutputStream os = con.getOutputStream();
+		os.write("userName=Donn".getBytes());
+		os.flush();
+		os.close();
+		// For POST only - END
 
-		Call call = client.newCall(okhttpRequest);
-		Response okHttpResponse = call.execute();
-		logger.info("DEBUG: Response code: " + okHttpResponse.code());
+		logger.info("DEBUG: Response status: " + con.getHeaderField(null)); //getting this way avoid exception for status code >400
+		printBasicResponseBody(con.getErrorStream()); // Assumes post is going to fail because I'm sending a silly request
+	}
+
+	private void printBasicResponseBody(InputStream inputStream) throws IOException
+	{
+		BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
+		String inputLine;
+		StringBuilder response = new StringBuilder();
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine);
+		}
+		in.close();
+		logger.info("DEBUG: Response body: " + response);
 	}
 
 	private void delete(HttpSession session, String path) {
