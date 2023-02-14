@@ -67,14 +67,16 @@ public class FileServlet extends HttpServlet {
 	}
 
 	private void executeRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		final String urlHttp = "http://www.google.com/";
+		final String urlHttps = "https://www.google.com/";
 		logger.info("DEBUG: Making HTTP GET request at start of FileServlet request handling");
-		okHttpGet("http://www.google.com/");
+		okHttpGet(urlHttp);
 		logger.info("DEBUG: Making HTTPS GET request at start of FileServlet request handling");
-		okHttpGet("https://www.google.com/");
+		okHttpGet(urlHttps);
 		logger.info("DEBUG: Making HTTP POST request at start of FileServlet request handling");
-		okHttpPost("http://www.google.com/");
+		okHttpPost(urlHttp);
 		logger.info("DEBUG: Making HTTPS POST request at start of FileServlet request handling");
-		okHttpPost("https://www.google.com/");
+		okHttpPost(urlHttps);
 		HttpSession session = request.getSession();
 
 		String method = request.getParameter("fileArg");
