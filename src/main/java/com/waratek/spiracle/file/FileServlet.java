@@ -24,8 +24,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 import java.util.Scanner;
 
@@ -97,40 +95,6 @@ public class FileServlet extends HttpServlet {
 
 		response.sendRedirect("file.jsp");
 	}
-
-//	private void okHttpGet(String url) throws IOException
-//	{
-//		logger.info("DEBUG: GET URL: " + url);
-//		OkHttpClient client = new OkHttpClient.Builder().build();
-//		Request okhttpRequest = new Request.Builder()
-//				.url(url)
-//				.build();
-//
-//		Call call = client.newCall(okhttpRequest);
-//		Response okHttpResponse = call.execute();
-//		logger.info("DEBUG: Response code: " + okHttpResponse.code());
-//		logger.info("DEBUG: Response body: " + okHttpResponse.body().string());
-//	}
-
-//	private void okHttpPost(String url) throws IOException
-//	{
-//		logger.info("DEBUG: POST URL: " + url);
-//		OkHttpClient client = new OkHttpClient.Builder().build();
-//		RequestBody formBody = new FormBody.Builder()
-//				.add("username", "test")
-//				.add("password", "test")
-//				.build();
-//
-//		Request okhttpRequest = new Request.Builder()
-//				.url(url)
-//				.post(formBody)
-//				.build();
-//
-//		Call call = client.newCall(okhttpRequest);
-//		Response okHttpResponse = call.execute();
-//		logger.info("DEBUG: Response code: " + okHttpResponse.code());
-//		logger.info("DEBUG: Response body: " + okHttpResponse.body().string());
-//	}
 
 	private void basicGet(String url) throws IOException
 	{
