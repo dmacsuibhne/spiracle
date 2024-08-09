@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.waratek</groupId>
-    <artifactId>spiracle</artifactId>
+    <artifactId>spiracle-db-stress</artifactId>
     <packaging>war</packaging>
     <version>1.4.0</version>
-    <name>spiracle</name>
+    <name>spiracle-db-stress</name>
     <url>http://maven.apache.org</url>
 
     <properties>
@@ -15,7 +15,7 @@
     </properties>
 
     <build>
-        <finalName>spiracle</finalName>
+        <finalName>spiracle-db-stress</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>

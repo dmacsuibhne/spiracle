@@ -49,12 +49,12 @@ public class UpdateUtil {
 			out.println(sql);
 			out.println("</pre>");
 
-			logger.info(sql);
+//			logger.info(sql);
 
 			stmt = con.prepareStatement(sql);
-			logger.info("Created PreparedStatement: " + sql);
+//			logger.info("Created PreparedStatement: " + sql);
 			int result = stmt.executeUpdate();
-			logger.info("Executed: " + sql);
+//			logger.info("Executed: " + sql);
 
 			out.println("<h1>Altered Rows:</h1>");
 			out.print("<pre>" + result + "</pre>");
@@ -76,12 +76,12 @@ public class UpdateUtil {
 		Connection con = null;
 		try {
 			con = ConnectionUtil.getConnection(application, request);
-			logger.info(sql);
+//			logger.info(sql);
 			stmt = con.prepareStatement(sql);
-			logger.info("Created PreparedStatement: " + sql);
+//			logger.info("Created PreparedStatement: " + sql);
 			int result = stmt.executeUpdate();
-			logger.info("Executed: " + sql);
-			logger.info("Query result: " + result);
+//			logger.info("Executed: " + sql);
+//			logger.info("Query result: " + result);
 		} finally {
 			SelectUtil.cleanup(stmt, con);
 		}

@@ -57,13 +57,13 @@ public class SelectUtil {
 			out.println(sql);
 			out.println("</pre>");
 
-			logger.info(sql);
+			//logger.info(sql);
 
 			stmt = con.prepareStatement(sql);
-			logger.info("Created PreparedStatement: " + sql);
+			//logger.info("Created PreparedStatement: " + sql);
 			if (setString){
 				stmt.setString(1, "something");
-				logger.info("Substituted parameter in PreparedStatement: " + sql);
+				//logger.info("Substituted parameter in PreparedStatement: " + sql);
 			}
 			executePreparedStatement(stmt, fetchSize, sql, out, allResults, showOutput);
 		} catch(SQLException sqlexception) {
@@ -96,9 +96,9 @@ public class SelectUtil {
 		ArrayList<ArrayList<Object>> resultList;
 		try {
 			con = ConnectionUtil.getConnection(application, request);
-			logger.info(sql);
+			//logger.info(sql);
 			stmt = con.prepareStatement(sql);
-			logger.info("Created PreparedStatement: " + sql);
+			//logger.info("Created PreparedStatement: " + sql);
 			ResultSet rs = executePreparedStatementWithoutWriting(stmt, getFetchSize(application), sql);
 			resultList = convertResultSetToList(rs);
 		} finally {
@@ -124,7 +124,7 @@ public class SelectUtil {
 	{
 		stmt.setFetchSize(fetchSize);
 		ResultSet rs = stmt.executeQuery();
-		logger.info("Executed: " + sql);
+		//logger.info("Executed: " + sql);
 
 		if (shouldWriteToResponse)
 		{
@@ -226,9 +226,9 @@ public class SelectUtil {
 	public static void cleanup(PreparedStatement stmt, Connection con) {
 		try {
 			if(stmt != null) {
-				logger.info("Closing PreparedStatement " + stmt);
+				//logger.info("Closing PreparedStatement " + stmt);
 				stmt.close();
-				logger.info("Closed PreparedStatement " + stmt);
+				//logger.info("Closed PreparedStatement " + stmt);
 			}
 		} catch (SQLException stmtCloseException) {
 			if(logger.isDebugEnabled()) {
@@ -240,9 +240,9 @@ public class SelectUtil {
 
 		try {
 			if(con != null) {
-				logger.info("Closing Connection " + con);
+				//logger.info("Closing Connection " + con);
 				con.close();
-				logger.info("Closed Connection " + con);
+				//logger.info("Closed Connection " + con);
 			}
 		} catch (SQLException conCloseException) {
 			if(logger.isDebugEnabled()) {

@@ -35,7 +35,7 @@ public class ConnectionUtil {
 
     public static Connection getConnection(ServletContext application, String connectionType) throws SQLException {
         Connection con = null;
-        logger.info("Connection Type: " + connectionType);
+        //logger.info("Connection Type: " + connectionType);
         if (connectionType.equals(Constants.C3P0_ORACLE)) {
             ComboPooledDataSource ds = (ComboPooledDataSource) application.getAttribute(Constants.ORACLE_CONNECTION_POOL);
             con = ds.getConnection();
@@ -63,7 +63,7 @@ public class ConnectionUtil {
             con = ds.getConnection();
         }
 
-        logger.info("Returning connection: " + con.toString());
+        //logger.info("Returning connection: " + con.toString());
         return con;
     }
 
@@ -73,7 +73,7 @@ public class ConnectionUtil {
         //Checking if connectionType is set, defaulting it to c3p0 if not set.
         String connectionType;
         if(request.getParameter("connectionType") == null) {
-            logger.warn("'connectionType' parameter not set, defaulting to: " + defaultConnection);
+//            logger.warn("'connectionType' parameter not set, defaulting to: " + defaultConnection);
             connectionType = defaultConnection;
         } else {
             connectionType = request.getParameter("connectionType");
