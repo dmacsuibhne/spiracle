@@ -56,7 +56,7 @@ public class DBPerf extends AbstractFileServlet
 
     private void insertAndSelectData(String table1, String table2)
     {
-        String sqlInsertSeed = "INSERT INTO " + table1 + " VALUES(0, TO_DATE('1989-12-09','YYYY-MM-DD'), 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')";
+        String sqlInsertSeed = "INSERT INTO " + table1 + " VALUES(0, TO_DATE('1989-12-09','YYYY-MM-DD'), 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 0, TO_DATE('1989-12-09','YYYY-MM-DD'), 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb', 0, TO_DATE('1989-12-09','YYYY-MM-DD'), 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')";
         try
         {
             UpdateUtil.executeUpdateWithoutNewPage(sqlInsertSeed, application, request);
@@ -111,7 +111,7 @@ public class DBPerf extends AbstractFileServlet
             throws SQLException
     {
         final int numRowsPerInsert = 1000;
-        final String valueRow = "(" + data.get(0) + ", TO_DATE('" + data.get(1) + "','YYYY-MM-DD'), '" + data.get(2) + "', '" + data.get(3) + "')";
+        final String valueRow = "(" + data.get(0) + ", TO_DATE('" + data.get(1) + "','YYYY-MM-DD'), '" + data.get(2) + "', '" + data.get(3) + "', "  + data.get(4) + ", TO_DATE('" + data.get(5) + "','YYYY-MM-DD'), '" + data.get(6) + "', '" + data.get(7) + "', "  + data.get(8) + ", TO_DATE('" + data.get(9) + "','YYYY-MM-DD'), '" + data.get(10) + "', '" + data.get(11) + "')";
         final String valueRowWithCommaAndNewline = valueRow + ",\n";
         final StringBuilder builder = new StringBuilder();
         builder.append("INSERT INTO " + tableName + " VALUES\n");
@@ -129,13 +129,30 @@ public class DBPerf extends AbstractFileServlet
     {
         BigDecimal col0Value = ((BigDecimal) data.get(0)).add(new BigDecimal(1));
         data.set(0, col0Value);
-        //todo modify date
         String col1Value = data.get(1).toString().substring(0, 10); //cut off time data so that it remain a valid date to insert
         data.set(1, col1Value);
         String col2Value = data.get(2).toString().substring(0, 20) + data.get(2).toString().substring(0, 20);
         data.set(2, col2Value);
         String col3Value = data.get(3).toString().substring(0, 20) + data.get(3).toString().substring(0, 20);
         data.set(3, col3Value);
+
+        BigDecimal col4Value = ((BigDecimal) data.get(4)).add(new BigDecimal(1));
+        data.set(4, col4Value);
+        String col5Value = data.get(5).toString().substring(0, 10); //cut off time data so that it remain a valid date to insert
+        data.set(5, col5Value);
+        String col6Value = data.get(6).toString().substring(0, 20) + data.get(6).toString().substring(0, 20);
+        data.set(6, col6Value);
+        String col7Value = data.get(7).toString().substring(0, 20) + data.get(7).toString().substring(0, 20);
+        data.set(7, col7Value);
+
+        BigDecimal col8Value = ((BigDecimal) data.get(8)).add(new BigDecimal(1));
+        data.set(8, col8Value);
+        String col9Value = data.get(9).toString().substring(0, 10); //cut off time data so that it remain a valid date to insert
+        data.set(9, col9Value);
+        String col10Value = data.get(10).toString().substring(0, 20) + data.get(10).toString().substring(0, 20);
+        data.set(10, col10Value);
+        String col11Value = data.get(11).toString().substring(0, 20) + data.get(11).toString().substring(0, 20);
+        data.set(11, col11Value);
     }
 
     private ArrayList<Object> selectData(String tableName, long row)
@@ -166,7 +183,7 @@ public class DBPerf extends AbstractFileServlet
     {
         logger.info("Dropping " + tableName + " table if it exists already");
         dropPerfTableIfExists(tableName);
-        final String sqlCreateTable = "CREATE TABLE " + tableName + " (col0 INT, col1 DATE, col2 VARCHAR2(240), col3 VARCHAR2(60))";
+        final String sqlCreateTable = "CREATE TABLE " + tableName + " (col0 INT, col1 DATE, col2 VARCHAR2(240), col3 VARCHAR2(60), col4 INT, col5 DATE, col6 VARCHAR2(240), col7 VARCHAR2(60), col8 INT, col9 DATE, col10 VARCHAR2(240), col11 VARCHAR2(60))";
 
         try
         {
