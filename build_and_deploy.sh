@@ -10,5 +10,8 @@ rm -f rules.log
 
 export JAVA_HOME=/jdks/hs/8/jdk-hs-8u331-linux-x64
 #export JAVA_HOME=/jdks/hs/11/jdk-hs-11u15-linux-x64
-#export JAVA_OPTS="-javaagent:/home/dmacsuibhne/waratekRepos/walter/JavaAutomation/plugin/agent/waratek.jar -Dcom.waratek.WaratekProperties=/home/dmacsuibhne/waratekRepos/walter/manual_waratek.properties"
-appservers/tomcat9/bin/catalina.sh run | tee "$HOME/dbperf_$(date +%Y-%m-%d_%H-%M-%S).log"
+export JAVA_OPTS="-Xmx512m"
+#export JAVA_OPTS="-javaagent:/home/dmacsuibhne/waratekRepos/walter/JavaAutomation/plugin/agent/waratek.jar -Dcom.waratek.WaratekProperties=/home/dmacsuibhne/waratekRepos/walter/manual_waratek.properties $JAVA_OPTS"
+appservers/tomcat9/bin/catalina.sh run 2>&1 | tee "$HOME/dbperf_$(date +%Y-%m-%d_%H-%M-%S).log"
+
+# Execute in another terminal: curl http://localhost:8080/spiracle-db-stress/DBPerf --data-raw 'table1=PerfA&table2=PerfB'

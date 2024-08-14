@@ -49,9 +49,11 @@ public class DBPerf extends AbstractFileServlet
     {
         this.request = request;
         application = request.getServletContext();
-        createPerfTable("PerfA");
-        createPerfTable("PerfB");
-        insertAndSelectData("PerfA", "PerfB");
+        final String table1 = request.getParameter("table1");
+        final String table2 = request.getParameter("table2");
+        createPerfTable(table1);
+        createPerfTable(table2);
+        insertAndSelectData(table1, table2);
     }
 
     private void insertAndSelectData(String table1, String table2)
