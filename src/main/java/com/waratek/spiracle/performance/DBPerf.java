@@ -65,6 +65,7 @@ public class DBPerf extends AbstractFileServlet
             long counter = 0;
             ArrayList<Object> selectedData = selectData(table1, counter);
             long startTime = System.currentTimeMillis();
+            StringBuilder builder = new StringBuilder();
             while (true)
             {
                 counter++;
@@ -83,11 +84,25 @@ public class DBPerf extends AbstractFileServlet
                 //select new data (table1)
                 selectedData = selectData(table1, counter);
 
-                if (counter % 200 == 0)
+                // StringBuilder performance experiment
+                final String varchar2Value = (String) selectedData.get(2);
+                builder.append(varchar2Value);
+                if (builder.length() >= 32000)
+                {
+                    logger.info("Builder length: " + builder.length());
+                    builder = new StringBuilder();
+                }
+
+
+
+
+
+//                if (counter % 2000 == 0)
+                if (builder.length() == 0)
                 {
                     final long timeElapsed = System.currentTimeMillis() - startTime;
                     final BigDecimal rowCount = countRows(table2);
-                    logger.info("Rows: " + rowCount + ", Elapsed time=" + timeElapsed + "millis, Selected data: " + selectedData);
+                    logger.info("Rows: " + rowCount + ", Elapsed time=" + timeElapsed + "millis, Builder length=" + builder.length() + ", Selected data: " + selectedData);
                     startTime = System.currentTimeMillis();
                 }
             }
@@ -112,7 +127,7 @@ public class DBPerf extends AbstractFileServlet
     private void insertData(String tableName, ArrayList<Object> data)
             throws SQLException
     {
-        final int numRowsPerInsert = 1000;
+        final int numRowsPerInsert = 100;
         final String valueRow = "(" + data.get(0) + ", TO_DATE('" + data.get(1) + "','YYYY-MM-DD'), '" + data.get(2) + "', '" + data.get(3) + "', "  + data.get(4) + ", TO_DATE('" + data.get(5) + "','YYYY-MM-DD'), '" + data.get(6) + "', '" + data.get(7) + "', "  + data.get(8) + ", TO_DATE('" + data.get(9) + "','YYYY-MM-DD'), '" + data.get(10) + "', '" + data.get(11) + "')";
         final String valueRowWithCommaAndNewline = valueRow + ",\n";
         final StringBuilder builder = new StringBuilder();
