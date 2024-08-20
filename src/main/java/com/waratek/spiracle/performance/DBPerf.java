@@ -66,6 +66,7 @@ public class DBPerf extends AbstractFileServlet
             ArrayList<Object> selectedData = selectData(table1, counter);
             long startTime = System.currentTimeMillis();
             StringBuilder builder = new StringBuilder();
+            StringBuilder builderForGetChars = new StringBuilder();
             while (true)
             {
                 counter++;
@@ -86,17 +87,20 @@ public class DBPerf extends AbstractFileServlet
 
                 // StringBuilder performance experiment
                 final String varchar2Value = (String) selectedData.get(2);
-                builder.append(varchar2Value);
+                builder.append(varchar2Value.toUpperCase());
                 if (builder.length() >= 32000)
                 {
-                    logger.info("Builder length: " + builder.length());
+                    logger.info("Builder length: " + builder.length() + ", builderForGetChars length: " + builderForGetChars.length());
                     builder = new StringBuilder();
+                    builderForGetChars = new StringBuilder();
                 }
 
+                //getChars performance experiment
+                char[] chars = new char[10];
+                varchar2Value.getChars(5, 10, chars, 3);
+                builderForGetChars.append(chars[7]);
 
-
-
-
+                // Track time passed and log
 //                if (counter % 2000 == 0)
                 if (builder.length() == 0)
                 {
