@@ -15,10 +15,8 @@
  */
 package com.waratek.spiracle.sql.servlet.mysql;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.waratek.spiracle.sql.servlet.util.ParameterNullFix;
+import com.waratek.spiracle.sql.util.SelectUtil;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -26,21 +24,24 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.waratek.spiracle.sql.servlet.util.ParameterNullFix;
-import com.waratek.spiracle.sql.util.SelectUtil;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Servlet implementation class Get_int
+ * Copy of MySql_Get_int which uses URLDecoder.decode() on the arg
  */
-@WebServlet("/MySql_Get_int")
-public class MySql_Get_int extends HttpServlet {
+@WebServlet("/MySql_Get_int_decode")
+public class MySql_Get_int_decode extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MySql_Get_int() {
+    public MySql_Get_int_decode() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -61,14 +62,16 @@ public class MySql_Get_int extends HttpServlet {
 
     private void executeRequest(HttpServletRequest request, HttpServletResponse response) throws IOException {          
         ServletContext application = this.getServletConfig().getServletContext();
-        List<String> queryStringList = new ArrayList<String>();     
+        List<String> queryStringList = new ArrayList<>();
         queryStringList.add("id");
         
         Map<String, String> nullSanitizedMap = ParameterNullFix.sanitizeNull(queryStringList, request);
 
         String id = nullSanitizedMap.get("id");
-        System.out.println("Debug: id: " + id);
-        
+        System.out.println("Debug: id before decode: " + id);
+        id = URLDecoder.decode(id, StandardCharsets.UTF_8.name());
+        System.out.println("Debug: id after decode: " + id);
+
         String sql = "SELECT * FROM users WHERE id = '" + id + " '";
 
         Boolean showErrors = true;
