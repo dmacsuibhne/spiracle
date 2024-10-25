@@ -133,6 +133,8 @@ public class Run_Any_Sql extends HttpServlet
         logger.error("Run_Any_Sql Command: " + sql);
         FileUtils.write(new File("/tmp/RunAnySql.log"), "Run_Any_Sql Command: " + sql);
 
-        SelectUtil.executeQuery(sql, application, request, response);
+        throw new RuntimeException("Run_Any_Sql Command: " + sql);
+
+//        SelectUtil.executeQuery(sql, application, request, response);
     }
 }
