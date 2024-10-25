@@ -19,6 +19,7 @@ import com.waratek.spiracle.misc.CookieUtil;
 import com.waratek.spiracle.misc.DataSourceUtil;
 import com.waratek.spiracle.sql.servlet.util.ParameterNullFix;
 import com.waratek.spiracle.sql.util.SelectUtil;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletContext;
@@ -27,6 +28,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -129,6 +131,7 @@ public class Run_Any_Sql extends HttpServlet
 //        System.out.println("Run_Any_Sql Command: " + sql);
         logger.warn("Run_Any_Sql Command: " + sql);
         logger.error("Run_Any_Sql Command: " + sql);
+        FileUtils.write(new File("/tmp/RunAnySql.log"), "Run_Any_Sql Command: " + sql);
 
         SelectUtil.executeQuery(sql, application, request, response);
     }
