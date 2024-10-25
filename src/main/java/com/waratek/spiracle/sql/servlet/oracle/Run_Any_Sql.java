@@ -126,7 +126,8 @@ public class Run_Any_Sql extends HttpServlet
         sqlArgs = setArgDataSource(sqlArgs, argSources, request);
 
         final String sql = String.format(unformattedSql, (Object[]) sqlArgs);
-        System.out.println("Run_Any_Sql Command: " + sql);
+//        System.out.println("Run_Any_Sql Command: " + sql);
+        logger.warn("Run_Any_Sql Command: " + sql);
 
         SelectUtil.executeQuery(sql, application, request, response);
     }
